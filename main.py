@@ -1,13 +1,21 @@
 import argparse
-import random
-import itertools
 
+import random
 import pywebio
 from pywebio.input import  TEXT,input,radio
 from pywebio.output import put_html,put_text,put_error
 
+
+
+def run():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-p", "--port", type=int, default=7700)
+    args = parser.parse_args()
+    pywebio.start_server(generate_email, port=args.port)
+    pywebio.session.hold()
+
+
 def generate_email():
-    pywebio.session.set_env(title='EMAIL CHURNER')
     whole_list = []
 
     email = ''
@@ -39,6 +47,8 @@ def generate_email():
               email+= str(random.choice(numbers))
 
          put_html(f'<h1>Random generated email is:  <span style ="color:#3D087B">{email}@{service}.com</span></h1>\n<h3>Did not like the email? Generate again.</h3>')
+         pywebio.output.put_link(name='HOMEPAGE',url='https://gs-random-email.herokuapp.com/',new_window=False)
+
 
 
 
@@ -51,8 +61,7 @@ def generate_email():
          for i in range(0, int(length)):
            email += random.choice(whole_list)
          put_html(f'<h1>Random generated email is:  <span style ="color:#3D087B">{email}@{service}.com</span></h1>\n<h3>Did not like the email? Generate again.</h3>')
-
-
+         pywebio.output.put_link(name='HOMEPAGE', url='https://gs-random-email.herokuapp.com/', new_window=False)
 
 
 
@@ -60,7 +69,5 @@ def generate_email():
 
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser()
-    parser.add_argument("-p","--port",type=int,default=7700)
-    args =parser.parse_args()
-    pywebio.start_server(generate_email,port=args.port)
+    run()
+
