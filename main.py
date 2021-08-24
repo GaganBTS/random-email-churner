@@ -7,7 +7,7 @@ from pywebio.input import  TEXT,input,radio
 from pywebio.output import put_html,put_text,put_error
 
 def generate_email():
-
+    pywebio.session.set_env(title='EMAIL CHURNER')
     whole_list = []
 
     email = ''
