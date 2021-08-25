@@ -16,13 +16,15 @@ def run():
 
 
 def generate_email():
+    pywebio.session.set_env(title='EMAIL-GENERATOR')
     whole_list = []
+    email_list =[]
 
-    email = ''
+
     fname = input('Enter your first name')
     lname = input('Enter your last name')
 
-    service = radio('Choose service name',options=['Gmail','Hotmail','Yahoo','Outlook','Other'])
+    service = radio('Choose service name',options=['gmail','hotmail','yahoo','outlook','other'])
     if service == 'Other':
         service = input('Enter the service name')
     number = radio('Do you want numbers in your email',options=['Yes','No'])
@@ -41,27 +43,47 @@ def generate_email():
         if leng <0:
             put_error('Length of numbers wanted exceeded the length of whole email, try again')
         else:
-         for i in range(0,leng):
+         m=0
+         while m <=5:
+          email = ''
+          for i in range(0,leng):
             email += random.choice(whole_list)
-         for j in range(0,int(n_length)):
+          for j in range(0,int(n_length)):
               email+= str(random.choice(numbers))
+          m += 1
+          email_list.append(email)
 
-         put_html(f'<h1>Random generated email is:  <span style ="color:#3D087B">{email}@{service}.com</span></h1>\n<h3>Did not like the email? Generate again.</h3>')
-         pywebio.output.put_link(name='HOMEPAGE',url='https://gs-random-email.herokuapp.com/',new_window=False)
+
+        put_html('<h1 style="text-align:center">Your randomly generated emails are:</h1>')
+        for _ in range(len(email_list)):
+            put_html(f'<div style="line-height:1.5"><ul><li style="font-size:20px; color: #3D087B">{email_list[_]}@{service}.com </li></ul><div>')
+        pywebio.output.put_html("<h2 style='text-align:center'>Didn't like the emails? Well, then generate again.</h2>")
+        put_html('<h3 style="text-align:center"><a href="https://gs-random-email.herokuapp.com/">Generate Again</a></h3>')
+
 
 
 
 
      else:
+
          for i in fname:
              whole_list.append(i)
          for j in lname:
              whole_list.append(j)
-
-         for i in range(0, int(length)):
+         m=0
+         while m<=5:
+          email=''
+          for i in range(0, int(length)):
            email += random.choice(whole_list)
-         put_html(f'<h1>Random generated email is:  <span style ="color:#3D087B">{email}@{service}.com</span></h1>\n<h3>Did not like the email? Generate again.</h3>')
-         pywebio.output.put_link(name='HOMEPAGE', url='https://gs-random-email.herokuapp.com/', new_window=False)
+          m+=1
+          email_list.append(email)
+         put_html('<h1 style="text-align:center">Your randomly generated emails are:</h1>')
+         for _ in range(len(email_list)):
+             put_html(f'<div style="line-height:1.5"><ul><li style="font-size:20px; color: #3D087B">{email_list[_]}@{service}.com </li></ul><div>')
+         pywebio.output.put_html("<h2 style='text-align:center'>Didn't like the emails? Well, then generate again.</h2>")
+         put_html('<h3 style="text-align:center"><a href="https://gs-random-email.herokuapp.com/">Generate Again</a></h3>')
+
+
 
 
 
